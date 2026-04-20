@@ -5,9 +5,6 @@ import './index.css';
 function App() {
   const [messages, setMessages] = useState([]);
 
-  // Automatically use relative paths on Vercel, and localhost during local dev
-  const BACKEND_URL = import.meta.env.PROD ? '' : 'http://localhost:3001';
-
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
@@ -16,14 +13,6 @@ function App() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
-
-  // Fetch chat history from the backend on page load
-  useEffect(() => {
-    fetch(`${BACKEND_URL}/api/messages`)
-      .then((res) => res.json())
-      .then((data) => setMessages(data))
-      .catch((err) => console.error("Failed to load chat history:", err));
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,11 +27,17 @@ function App() {
     setMessages((prev) => [...prev, userMessage]);
 
     try {
-      // Send user message to the local backend
-      const response = await fetch(`${BACKEND_URL}/api/messages`, {
+      // Format history for the new API
+      const formattedHistory = messages.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }));
+      formattedHistory.push({ role: 'user', content: textToSubmit });
+
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: textToSubmit }),
+        body: JSON.stringify({ messages: formattedHistory }),
       });
 
       if (!response.ok) {
@@ -51,7 +46,10 @@ function App() {
       }
       const data = await response.json();
 
-      setMessages((prev) => [...prev, data.aiMessage]);
+      // Extract the response from OpenAI's structure
+      const aiContent = data.choices[0].message.content;
+      const aiMessage = { role: "ai", content: aiContent, _id: Date.now() + 1 };
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error("Failed to send message:", error);
       const errorMessage = {
@@ -89,7 +87,7 @@ function App() {
                 <Sparkles size={40} />
               </div>
               <h2>Start a conversation</h2>
-              <p>Your messages are saved in the backend and persist on refresh.</p>
+              <p>Your messages are saved locally in this session.</p>
             </div>
           )}
 

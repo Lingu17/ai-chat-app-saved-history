@@ -3,7 +3,11 @@ import { Send, BrainCircuit, Sparkles } from 'lucide-react';
 import './index.css';
 
 function App() {
-  const [messages, setMessages] = useState([]);
+  // Load existing messages from localStorage on initial render
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem('chatHistory');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -13,6 +17,11 @@ function App() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('chatHistory', JSON.stringify(messages));
+  }, [messages]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

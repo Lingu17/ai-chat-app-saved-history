@@ -8,15 +8,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "server": "node server.js"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.2",
     "lucide-react": "^1.8.0",
-    "openai": "^6.34.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },

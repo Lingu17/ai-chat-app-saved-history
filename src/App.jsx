@@ -42,7 +42,8 @@ function App() {
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || `Server error: ${response.status}`);
+        const errMsg = errData.error?.message || errData.error || `Server error: ${response.status}`;
+        throw new Error(typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg));
       }
       const data = await response.json();
 

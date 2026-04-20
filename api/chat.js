@@ -1,6 +1,9 @@
 export default async function handler(req, res) {
     try {
-        const { messages } = req.body;
+        console.log("Incoming request:", req.body);
+
+        const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+        const { messages } = body;
 
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
@@ -15,9 +18,15 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
+
+        if (!response.ok) {
+            return res.status(response.status).json(data);
+        }
+
         res.status(200).json(data);
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: "Server error" });
     }
 }

@@ -1,12 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import { promises as fs } from 'fs';
+import path from 'path';
+import os from 'os';
 import OpenAI from 'openai';
 import 'dotenv/config'; // Automatically loads your existing .env file
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const FILE_PATH = './chat-history.json';
+
+// Use Vercel's writable /tmp directory in production
+const FILE_PATH = process.env.VERCEL ? path.join(os.tmpdir(), 'chat-history.json') : './chat-history.json';
 
 app.use(cors());
 app.use(express.json());
@@ -74,6 +78,12 @@ app.post('/api/messages', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Backend server running at http://localhost:${PORT}`);
-});
+// Only run the server directly if we are NOT on Vercel
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Backend server running at http://localhost:${PORT}`);
+    });
+}
+
+// Export the app for Vercel's serverless environment
+export default app;

@@ -5,7 +5,9 @@ EchoVault AI is an **AI-powered chat application** that allows users to interact
 The system processes user queries, sends them to an AI model, and returns meaningful responses in real-time through a clean and modern interface.
 
 ---
-
+🌐 Live Demo
+https://ai-chat-app-saved-history.vercel.app/
+---
 # 🌟 Features
 
 * 💬 Real-time **AI chat interaction**
@@ -138,7 +140,8 @@ http://localhost:5173
 
 Chat with the AI and receive intelligent responses instantly.
 
-(Add your screenshots here)
+<img width="1918" height="974" alt="image" src="https://github.com/user-attachments/assets/c993a2d5-e13c-48aa-853c-c96c04362603" />
+
 
 ---
 

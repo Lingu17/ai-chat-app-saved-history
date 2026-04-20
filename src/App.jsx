@@ -5,7 +5,8 @@ import './index.css';
 function App() {
   const [messages, setMessages] = useState([]);
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+  // Automatically use relative paths on Vercel, and localhost during local dev
+  const BACKEND_URL = import.meta.env.PROD ? '' : 'http://localhost:3001';
 
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);

@@ -1,169 +1,140 @@
-# 🚀 EchoVault AI
+<p align="center">
+  <img src="docs/assets/readme-hero.svg" alt="EchoVault AI — Chat with AI. Keep every conversation. Ask, route, reply, remember." width="1200" />
+</p>
 
-EchoVault AI is an **AI-powered chat application** that allows users to interact with an intelligent assistant while maintaining conversation history.
+<p align="center">
+  <strong>An AI chat app that remembers your conversation.</strong><br />
+  A fast React interface, history saved in your browser, and a serverless route that keeps the API key off the client.
+</p>
 
-The system processes user queries, sends them to an AI model, and returns meaningful responses in real-time through a clean and modern interface.
+<p align="center">
+  <a href="https://ai-chat-app-saved-history.vercel.app/"><img src="https://img.shields.io/badge/Live%20demo-Start%20chatting-8b5cf6?style=for-the-badge" alt="Open the live EchoVault AI demo" /></a>
+</p>
 
----
-🌐 Live Demo
-https://ai-chat-app-saved-history.vercel.app/
----
-# 🌟 Features
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?style=flat-square" alt="Vite 8" />
+  <img src="https://img.shields.io/badge/API-Vercel%20serverless-000000?style=flat-square" alt="Vercel serverless function" />
+  <img src="https://img.shields.io/badge/Model-OpenRouter-6366F1?style=flat-square" alt="OpenRouter" />
+</p>
 
-* 💬 Real-time **AI chat interaction**
-* 🧠 Persistent **chat history (localStorage)**
-* ⚡ Fast and responsive **React + Vite UI**
-* 🔐 Secure backend using **serverless API**
-* 🎨 Clean and modern **chat interface**
-* 🔄 Auto-scroll and typing indicator
-
----
-
-# 🧠 How It Works
-
-1. User types a message in the chat input
-2. The message is sent to the backend API (`/api/chat`)
-3. The backend securely calls the AI model
-4. The AI response is returned and displayed in the UI
-
----
-
-# 🛠 Tech Stack
-
-### Frontend
-
-* React
-* Vite
-* CSS / Tailwind
-
-### Backend
-
-* Vercel Serverless Functions
-
-### AI Integration
-
-* OpenAI API
-
-### Libraries
-
-* Axios
-* React Hooks
+<p align="center">
+  <a href="#the-product">Product</a> ·
+  <a href="#engineering-decisions">Engineering</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="#run-locally">Run locally</a> ·
+  <a href="#creator">Creator</a>
+</p>
 
 ---
 
-# 📂 Project Structure
+## The product
 
-```
-ai-chat-app/
-│
-├── api/
-│   └── chat.js
-│
-├── src/
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-│
-├── public/
-├── package.json
-├── vite.config.js
-└── README.md
+Plenty of chat demos forget everything on refresh, or ship the model key inside the JavaScript bundle where anyone can copy it.
+
+**EchoVault AI keeps the conversation and protects the key.** Messages persist in the browser between visits, the full history is sent with each request so the model keeps context, and the model call happens in a serverless function, never in the client.
+
+| Capability | What you can do |
+| :--- | :--- |
+| **AI chat** | Send a message and get a model reply in a clean chat interface. |
+| **Saved history** | Conversations are stored in `localStorage` and restored when you reload or come back. |
+| **Context-aware replies** | The whole conversation is sent with each message, so follow-up questions work. |
+| **Server-side key** | The browser calls `/api/chat`; only the serverless function holds the provider key. |
+| **Smooth UX** | Enter to send, Shift+Enter for a new line, a typing indicator and automatic scrolling. |
+| **Readable errors** | Provider or network failures appear as a chat message instead of a blank screen. |
+
+### A workflow you can follow
+
+**Type → POST /api/chat with history → OpenRouter → reply rendered → history saved**
+
+## Engineering decisions
+
+| Engineering problem | Implementation | Inspect the code |
+| :--- | :--- | :--- |
+| API keys must never reach the browser | A Vercel serverless function proxies the request and reads the key from the environment. | [`api/chat.js`](api/chat.js) |
+| History should survive a refresh without a database | State initializes from `localStorage` and is written back on every change. | [`src/App.jsx`](src/App.jsx) |
+| The model needs context, the UI needs its own message shape | UI messages (`user` / `ai`) are mapped to provider roles (`user` / `assistant`) when sending. | [`src/App.jsx`](src/App.jsx) |
+| Upstream errors come in different shapes | Error bodies are normalized into one readable message shown in the chat. | [`src/App.jsx`](src/App.jsx), [`api/chat.js`](api/chat.js) |
+| A single-page app needs both static routes and an API | `vercel.json` routes `/api/*` to functions and everything else to `index.html`. | [`vercel.json`](vercel.json) |
+
+## Architecture
+
+```mermaid
+flowchart LR
+    UI[React + Vite UI] <--> LS[(localStorage<br/>chatHistory)]
+    UI -->|POST /api/chat<br/>messages| FN[Vercel serverless function]
+    FN -->|Bearer key from env| OR[OpenRouter<br/>chat completions]
+    OR --> FN --> UI
 ```
 
----
+| Layer | Technology |
+| :--- | :--- |
+| Frontend | React 19, Vite 8, lucide-react icons, CSS |
+| API | Vercel serverless function (`api/chat.js`) |
+| Model | OpenRouter chat completions (`gpt-4o-mini`) |
+| Storage | Browser `localStorage` |
+| Hosting | Vercel |
 
-# ⚙️ Installation
+<details>
+<summary><strong>Scope and known limitations</strong></summary>
 
-### 1️⃣ Clone the repository
+- History lives in one browser on one device; clearing site data removes it, and it does not sync across devices.
+- There is a single conversation thread, with no way to start, name or delete separate chats yet.
+- The full history is sent each time, so very long conversations cost more tokens and can exceed the model's context.
+- The `convex/` folder and the empty `server.js` / `index.js` files are leftovers and are not used by the app.
 
-```
+</details>
+
+## Run locally
+
+```bash
 git clone https://github.com/Lingu17/ai-chat-app-saved-history.git
-```
-
-### 2️⃣ Navigate to the project folder
-
-```
 cd ai-chat-app-saved-history
-```
-
-### 3️⃣ Install dependencies
-
-```
 npm install
 ```
 
----
+Create `.env.local` in the project root with your **OpenRouter** API key (the variable keeps the name `OPENAI_API_KEY`):
 
-# 🔑 Environment Variables
-
-Create a `.env.local` file in the project root:
-
-```
-OPENAI_API_KEY=your_api_key_here
+```env
+OPENAI_API_KEY=your_openrouter_key_here
 ```
 
----
+Run the frontend and the serverless function together with the Vercel CLI:
 
-# ▶️ Run the Application
-
-### Run full-stack locally (recommended)
-
-```
+```bash
 npx vercel dev
 ```
 
-Open your browser and visit:
+`npm run dev` starts only the Vite frontend, so `/api/chat` will not be available that way.
 
+| Script | Purpose |
+| :--- | :--- |
+| `npm run dev` | Vite dev server (frontend only) |
+| `npm run build` | Production build |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | ESLint |
+
+**Deploy:** import the repository into Vercel and set `OPENAI_API_KEY` (your OpenRouter key) in the project's environment variables.
+
+## Project map
+
+```text
+ai-chat-app-saved-history/
+├── api/chat.js        Serverless proxy to OpenRouter
+├── src/
+│   ├── App.jsx        Chat UI, history persistence, request handling
+│   ├── index.css      Styles
+│   └── main.jsx       React entry
+├── public/            Favicon and icons
+├── index.html         Vite entry page
+├── vercel.json        API and SPA rewrites
+└── vite.config.js     Vite configuration
 ```
-http://localhost:3000
-```
+
+## Creator
+
+**Lingraj Malipatil** · [GitHub @Lingu17](https://github.com/Lingu17) · [LinkedIn](https://www.linkedin.com/in/lingraj-malipatil-a2735a241/)
 
 ---
 
-### Run frontend only (UI testing)
-
-```
-npm run dev
-```
-
-Open:
-
-```
-http://localhost:5173
-```
-
-⚠️ Note: API will not work in this mode.
-
----
-
-# 📸 Demo
-
-Chat with the AI and receive intelligent responses instantly.
-
-<img width="1918" height="974" alt="image" src="https://github.com/user-attachments/assets/c993a2d5-e13c-48aa-853c-c96c04362603" />
-
-
----
-
----
-
-# 🚀 Future Improvements
-
-* 🗂️ Integrate cloud database for persistent chat history
-* 🔐 Implement user authentication and session management
-* 📤 Add chat export functionality (PDF/JSON formats)
-* 🎙️ Enable voice-based interaction
-* 🌙 Introduce dark/light theme toggle
-
----
-
-# 👨‍💻 Author
-
-**Lingraj Malipatil**
-
-GitHub:
-https://github.com/Lingu17
-
----
-
-⭐ If you like this project, consider **starring the repository**!
+<p align="center"><strong>EchoVault AI</strong><br />Chat with AI. Keep every conversation.</p>

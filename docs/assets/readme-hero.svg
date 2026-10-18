@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">EchoVault AI — Chat with AI. Keep every conversation.</title>
+  <desc id="desc">EchoVault AI is a React chat app that keeps conversation history in the browser and calls the model through a serverless API route so the key stays on the server.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#111827"/><stop offset="1" stop-color="#17132f"/></linearGradient>
+    <linearGradient id="accent" x1="0" x2="1"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#e879f9"/></linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#94a3b8" opacity=".12"/></pattern>
+  </defs>
+  <rect width="1200" height="460" rx="24" fill="url(#background)"/>
+  <rect width="1200" height="460" rx="24" fill="url(#dots)"/>
+  <path d="M700 0H1100L800 460H400Z" fill="#a78bfa" opacity=".04"/>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <path d="m57 40 16-8 16 8-16 8Zm0 8 16 8 16-8M57 56l16 8 16-8" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round"/>
+    <text x="103" y="56" fill="#f8fafc" font-size="23.0" font-weight="700">EchoVault<tspan fill="#a78bfa"> AI</tspan></text>
+    <text x="56" y="128" fill="#f8fafc" font-size="53.2" font-weight="750" letter-spacing="-2">Chat with AI.</text>
+    <text x="56" y="190" fill="url(#accent)" font-size="53.2" font-weight="750" letter-spacing="-2">Keep every conversation.</text>
+    <text x="58" y="228" fill="#cbd5e1" font-size="18.0">A React chat app with history saved in the browser and a serverless model route.</text>
+    <rect x="842" y="72" width="302" height="159" rx="14" fill="#0b1020" stroke="#37304f"/>
+    <path d="M842 110h302" stroke="#37304f"/>
+    <circle cx="861" cy="91" r="4" fill="#a78bfa"/><circle cx="876" cy="91" r="4" fill="#475569"/><circle cx="891" cy="91" r="4" fill="#475569"/>
+    <text x="916" y="96" fill="#94a3b8" font-size="12">chat / history</text>
+    <g font-family="Consolas,Monaco,monospace" font-size="14.0">
+      <text x="862" y="138" fill="#a78bfa">message<tspan fill="#94a3b8"> → /api/chat</tspan></text>
+      <text x="862" y="166" fill="#e879f9">/api/chat<tspan fill="#94a3b8"> → OpenRouter</tspan></text>
+      <text x="862" y="194" fill="#67e8f9">reply<tspan fill="#94a3b8"> → localStorage</tspan></text>
+    </g>
+    <g fill="#191c30" stroke="#35354e">
+      <rect x="56" y="282" width="258" height="106" rx="12"/>
+      <rect x="332" y="282" width="258" height="106" rx="12"/>
+      <rect x="608" y="282" width="258" height="106" rx="12"/>
+      <rect x="884" y="282" width="260" height="106" rx="12"/>
+    </g>
+    <g fill="#a78bfa" font-size="12" font-weight="700" letter-spacing="2">
+      <text x="76" y="309">01 / ASK</text>
+      <text x="352" y="309">02 / ROUTE</text>
+      <text x="628" y="309">03 / REPLY</text>
+      <text x="904" y="309">04 / REMEMBER</text>
+    </g>
+    <text x="76" y="341" fill="#f1f5f9" font-size="17.0" font-weight="650">Type a message</text>
+    <text x="76" y="367" fill="#94a3b8" font-size="13.0">Enter to send</text>
+    <text x="352" y="341" fill="#f1f5f9" font-size="17.0" font-weight="650">Call the model</text>
+    <text x="352" y="367" fill="#94a3b8" font-size="13.0">Vercel serverless function</text>
+    <text x="628" y="341" fill="#f1f5f9" font-size="17.0" font-weight="650">Show the answer</text>
+    <text x="628" y="367" fill="#94a3b8" font-size="13.0">Typing indicator + autoscroll</text>
+    <text x="904" y="341" fill="#f1f5f9" font-size="17.0" font-weight="650">Reload, still there</text>
+    <text x="904" y="367" fill="#94a3b8" font-size="13.0">History in localStorage</text>
+    <text x="56" y="428" fill="#64748b" font-size="13">React 19 · Vite · Vercel serverless functions · OpenRouter · lucide-react</text>
+  </g>
+</svg>
